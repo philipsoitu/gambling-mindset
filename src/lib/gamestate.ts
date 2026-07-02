@@ -1,6 +1,15 @@
+import { type BetGroup } from "$lib/bestbet";
+
 export type GameState = {
   team1: string,
   team2: string,
+  screenshot: File,
+  odds: Odds,
+  betGroup: BetGroup,
+  status: 'init' | 'parsed' | 'calculated' | 'error'
+};
+
+export type Odds = {
   winner3Way: {
     team1: number,
     draw: number,
@@ -19,4 +28,4 @@ export type GameState = {
     team1: number,
     team2: number,
   },
-};
+}

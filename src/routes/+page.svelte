@@ -2,47 +2,56 @@
   import { Button } from "$lib/components/ui/button/index";
   import GameCard from "$lib/components/GameCard.svelte";
   import FileDropzone from "$lib/components/FileDropzone.svelte";
-  import { bestBetCalculator, type BetGroup } from "$lib/bestbet";
   import type { GameState } from "$lib/gamestate";
 
-  const testGameState: GameState = $state({
-    team1: "Austria",
-    team2: "Spain",
-    winner3Way: {
-      team1: 9.5,
-      draw: 5,
-      team2: 1.33,
-    },
-    winner2Way: {
-      team1: 6.25,
-      team2: 1.12,
-    },
-    doubleChance: {
-      team2OrDraw: 1.05,
-      team1OrDraw: 3.25,
-      team1OrTeam2: 1.16,
-    },
-    drawNoBet: {
-      team1: 7,
-      team2: 1.06,
-    },
-  });
-
-  let bestBetGroup: BetGroup = $state({ bets: [], guaranteed_return: 0 });
   let files: File[] = $state([]);
-
-  const updateBestBetGroup = () => {
-    bestBetGroup = bestBetCalculator(testGameState);
-  };
+  let games: GameState[] = $state([]);
 </script>
 
-<img
-  class="fit-picture"
-  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJB7sR7ymtZ1TDYf97EBI8cys-MFTtvuBteuxZpiOq480vJn-qhS4ZF5g"
-  alt="Grapefruit slice atop a pile of other slices"
-/>
+<main
+  class="mx-auto flex w-full max-w-7xl flex-col items-center gap-8 px-4 py-8"
+>
+  <img
+    class="fit-picture"
+    src="/gambling_motivation.jpgg"
+    alt="gambling motivation"
+  />
 
-<Button onclick={updateBestBetGroup}>Update best bet</Button>
-<FileDropzone bind:files />
+  <div class="w-full max-w-2xl">
+    <FileDropzone bind:files />
+  </div>
 
-<GameCard gameState={testGameState} {bestBetGroup} />
+  <div class="flex w-full flex-wrap justify-center gap-6">
+    <Button
+      onclick={() => {
+        for (const file of files) {
+          games.push({
+            team1: "tdb",
+            team2: "tdb",
+            betGroup: { bets: [], guaranteed_return: 0 },
+            odds: {
+              doubleChance: { team1OrDraw: 0, team1OrTeam2: 0, team2OrDraw: 0 },
+              drawNoBet: { team1: 0, team2: 0 },
+              winner2Way: { team1: 0, team2: 0 },
+              winner3Way: { draw: 0, team1: 0, team2: 0 },
+            },
+            screenshot: file,
+            status: "init",
+          });
+        }
+        files = [];
+      }}
+    >
+      Upload files
+    </Button>
+    <Button onclick={() => {}}>Send screenshots to gemini</Button>
+
+    <Button onclick={() => {}}>Calculate best game to bet on</Button>
+  </div>
+
+  <div class="flex w-full flex-wrap justify-center gap-6">
+    {#each games as game}
+      <GameCard gameState={game} />
+    {/each}
+  </div>
+</main>

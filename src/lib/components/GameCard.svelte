@@ -3,12 +3,8 @@
   import { Button } from "$lib/components/ui/button/index";
 
   import type { GameState } from "$lib/gamestate";
-  import type { BetGroup } from "$lib/bestbet";
 
-  let {
-    gameState,
-    bestBetGroup,
-  }: { gameState: GameState; bestBetGroup: BetGroup } = $props();
+  let { gameState }: { gameState: GameState } = $props();
 
   let showJson = $state(false);
   let handleShowJson = () => {
@@ -21,7 +17,7 @@
     <Card.Title>{gameState.team1} vs {gameState.team2}</Card.Title>
   </Card.Header>
   <Card.Content>
-    <pre>{JSON.stringify(bestBetGroup, null, 2)}</pre>
+    <pre>{JSON.stringify(gameState.betGroup, null, 2)}</pre>
   </Card.Content>
   <Card.Footer>
     <Button size="sm" variant="secondary" onclick={handleShowJson}>
