@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button/index";
   import GameCard from "$lib/components/GameCard.svelte";
+  import FileDropzone from "$lib/components/FileDropzone.svelte";
   import { bestBetCalculator, type BetGroup } from "$lib/bestbet";
   import type { GameState } from "$lib/gamestate";
 
@@ -28,6 +29,7 @@
   });
 
   let bestBetGroup: BetGroup = $state({ bets: [], guaranteed_return: 0 });
+  let files: File[] = $state([]);
 
   const updateBestBetGroup = () => {
     bestBetGroup = bestBetCalculator(testGameState);
@@ -41,5 +43,6 @@
 />
 
 <Button onclick={updateBestBetGroup}>Update best bet</Button>
+<FileDropzone bind:files />
 
-<GameCard gameState={testGameState} bestBetGroup={bestBetGroup} />
+<GameCard gameState={testGameState} {bestBetGroup} />
