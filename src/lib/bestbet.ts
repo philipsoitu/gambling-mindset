@@ -41,16 +41,16 @@ const bestWinner2Way = (gamestate: GameState): BetGroup => {
   let a = 0
   let b = 0
 
-  if (gamestate.winner2Way.team1 > gamestate.winner2Way.team2) {
+  if (gamestate.odds.winner2Way.team1 > gamestate.odds.winner2Way.team2) {
     team_a = gamestate.team1
     team_b = gamestate.team2
-    a = gamestate.winner2Way.team1
-    b = gamestate.winner2Way.team2
+    a = gamestate.odds.winner2Way.team1
+    b = gamestate.odds.winner2Way.team2
   } else {
     team_a = gamestate.team2
     team_b = gamestate.team1
-    a = gamestate.winner2Way.team2
-    b = gamestate.winner2Way.team1
+    a = gamestate.odds.winner2Way.team2
+    b = gamestate.odds.winner2Way.team1
   }
 
   let x = 10 * (a - 1) / b

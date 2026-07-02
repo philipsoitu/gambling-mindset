@@ -9,6 +9,12 @@ export type GameState = {
   status: 'init' | 'parsed' | 'calculated' | 'error'
 };
 
+export type ParsedGame = {
+  team1: string,
+  team2: string,
+  odds: Odds,
+};
+
 export type Odds = {
   winner3Way: {
     team1: number,
