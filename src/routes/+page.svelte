@@ -2,6 +2,7 @@
   import { Button } from "$lib/components/ui/button/index";
   import GameCard from "$lib/components/GameCard.svelte";
   import FileDropzone from "$lib/components/FileDropzone.svelte";
+  import { bestBetCalculator } from "$lib/bestbet";
   import type { GameState, Odds, ParsedGame } from "$lib/gamestate";
 
   let files: File[] = $state([]);
@@ -14,6 +15,22 @@
     winner2Way: { team1: 0, team2: 0 },
     winner3Way: { draw: 0, team1: 0, team2: 0 },
   });
+
+  const calculateParsedGames = () => {
+    games = games
+      .map((game) => {
+        if (game.status !== "parsed") return game;
+
+        return {
+          ...game,
+          betGroup: bestBetCalculator(game),
+          status: "calculated" as const,
+        };
+      })
+      .sort(
+        (a, b) => b.betGroup.guaranteed_return - a.betGroup.guaranteed_return,
+      );
+  };
 
   async function sendInitGamesToGemini() {
     const initGames = games
@@ -90,7 +107,8 @@
       {isParsing ? "Sending..." : "Send screenshots to gemini"}
     </Button>
 
-    <Button onclick={() => {}}>Calculate best game to bet on</Button>
+    <Button onclick={calculateParsedGames}>Calculate best game to bet on</Button
+    >
   </div>
 
   <div class="flex w-full flex-wrap justify-center gap-6">
